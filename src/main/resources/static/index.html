@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Decode Barcode</title>
+    <script>
+        function uploadAndDecode() {
+            var fileInput = document.getElementById('barcodeImage');
+            var file = fileInput.files[0];
+            var formData = new FormData();
+            formData.append('barcodeImage', file);
+
+            fetch('/decode-barcode', {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('result').textContent = data;
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    document.getElementById('result').textContent = 'Error decoding the barcode';
+                });
+        }
+    </script>
+</head>
+<body>
+<h2>Decode Barcode from Uploaded Image</h2>
+<input type="file" id="barcodeImage" accept="image/*">
+<button onclick="uploadAndDecode()">Decode</button>
+<div id="result">Decoded data will appear here</div>
+</body>
+</html>
